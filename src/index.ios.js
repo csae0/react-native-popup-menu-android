@@ -5,19 +5,20 @@ import { ActionSheetIOS } from 'react-native'
 type PopupMenuItem = { id?: any, label?: string }
 type OnPopupMenuItemSelect = (selectedPopupMenuItem: PopupMenuItem) => void
 type PopupMenuOptions = {|
+    tintColor?: string,
     cancelLabel?: string, // defaults to "Cancel"
     onCancel?: () => void
 |}
 
-async function showPopupMenu(items: PopupMenuItem[], onSelect: OnPopupMenuItemSelect, ignoreThisIsAnchorOnAndroid, { cancelLabel='Cancel', onCancel }: PopupMenuOptions={}): Promise<void> {
+async function showPopupMenu(items: PopupMenuItem[], onSelect: OnPopupMenuItemSelect, ignoreThisIsAnchorOnAndroid, { cancelLabel='Cancel', onCancel, tintColor }: PopupMenuOptions={}): Promise<void> {
     // const actionTitles = this.props.hiddenButtons.map(btn => btn.props.title);
     // actionTitles.push(this.props.cancelButtonLabel);
 
     const actionSheetItems = items.map(item => item.label);
     actionSheetItems.unshift(cancelLabel);
-
     const selectedIndex: number = await new Promise(resolve =>
         ActionSheetIOS.showActionSheetWithOptions({
+            tintColor,
             options: actionSheetItems,
             cancelButtonIndex: 0
         }, resolve)
